@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Morfos Edtech Akademi</title>
+<meta name="description" content="Morfos Edtech Akademi – interaktiva e-kurser och SCORM-utbildningar. Ny webbplats kommer snart.">
+<link rel="icon" type="image/png" sizes="32x32" href="/icon-32.png">
+<link rel="apple-touch-icon" href="/icon-180.png">
+<meta name="theme-color" content="#f8f7f2">
+<style>
+  @font-face { font-family: "Outfit"; font-weight: 400; font-display: swap; src: url(/fonts/outfit-latin-400-normal.woff2) format("woff2"); }
+  @font-face { font-family: "Outfit"; font-weight: 500; font-display: swap; src: url(/fonts/outfit-latin-500-normal.woff2) format("woff2"); }
+  :root { --bg: #f8f7f2; --ink: #122d23; --green: #205245; --sage: #6a8d77; --mist: #bbc1af; }
+  * { box-sizing: border-box; }
+  html, body { height: 100%; margin: 0; }
+  body {
+    background: var(--bg); color: var(--ink);
+    font-family: "Outfit", system-ui, -apple-system, "Segoe UI", sans-serif;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    min-height: 100vh; padding: 2rem 1.25rem; text-align: center;
+  }
+  main { display: flex; flex-direction: column; align-items: center; gap: 2.25rem; }
+  .logo { width: min(360px, 78vw); height: auto; display: block; }
+  .rule { width: 56px; height: 2px; background: var(--mist); border: 0; margin: 0; }
+  .msg { margin: 0; font-size: clamp(1.15rem, 3.4vw, 1.4rem); font-weight: 500; letter-spacing: .01em; }
+  .msg span { display: block; margin-top: .35rem; font-size: .8em; font-weight: 400; color: var(--sage); }
+  a.mail {
+    color: var(--green); text-decoration: none; font-size: 1.05rem;
+    border-bottom: 1.5px solid var(--mist); padding-bottom: 2px;
+  }
+  .contact { display: flex; flex-direction: column; align-items: center; gap: 1rem; }
+  .people { display: flex; flex-wrap: wrap; justify-content: center; gap: .9rem 2.25rem; }
+  a.mail:hover, a.mail:focus-visible { border-color: var(--green); outline: none; }
+  footer { position: absolute; bottom: 1.25rem; font-size: .8rem; color: var(--sage); }
+  @media (max-height: 560px) { footer { position: static; margin-top: 2rem; } }
+</style>
+</head>
+<body>
+<main>
+  <picture>
+    <source srcset="/morfos-logo.webp" type="image/webp">
+    <img class="logo" src="/morfos-logo.png" width="654" height="539" alt="Morfos Edtech Akademi">
+  </picture>
+  <hr class="rule">
+  <p class="msg">Ny webbplats kommer snart<span lang="en">New website coming soon</span></p>
+  <div class="contact">
+    <a class="mail" href="mailto:info@morfos.se">info@morfos.se</a>
+    <div class="people">
+      <a class="mail" href="mailto:tom@morfos.se">tom@morfos.se</a>
+      <a class="mail" href="mailto:fredrik@morfos.se">fredrik@morfos.se</a>
+    </div>
+  </div>
+</main>
+<footer>© 2026 Morfos Edtech Akademi</footer>
+</body>
+</html>
