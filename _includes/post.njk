@@ -6,6 +6,6 @@ layout: base.njk
   <h1>{{ title }}</h1>
   <p class="meta"><time datetime="{{ page.date | isoDate }}">{{ page.date | svDate }}</time>{% if author %} · {{ author }}{% endif %}</p>
   {{ content | safe }}
-  <div class="post-end">{% include "caterpillar.svg" %}</div>
+  <div class="post-end"><picture><source srcset="/morfos-caterpillar.webp" type="image/webp"><img class="deco deco-caterpillar" src="/morfos-caterpillar.png" width="360" height="89" alt=""></picture></div>
 </article>
 <a class="back" href="/blogg/">← Alla inlägg</a>
