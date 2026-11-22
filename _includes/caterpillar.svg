@@ -1,0 +1,18 @@
+<svg class="deco deco-caterpillar" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 32">
+  <path d="M4 26 H92" stroke="#bbc1af" stroke-width="1.5" stroke-linecap="round"/>
+  <g>
+    <circle cx="14" cy="20" r="5.5" fill="#bbc1af"/>
+    <circle cx="24" cy="17" r="6.5" fill="#6a8d77"/>
+    <circle cx="35" cy="15" r="7" fill="#205245"/>
+    <circle cx="46" cy="17" r="6.5" fill="#6a8d77"/>
+    <circle cx="57" cy="19" r="6" fill="#205245"/>
+    <circle cx="67" cy="17" r="6.5" fill="#6a8d77"/>
+    <circle cx="78" cy="14" r="7.5" fill="#205245"/>
+  </g>
+  <g fill="#122d23">
+    <circle cx="24" cy="24.5" r="1"/><circle cx="35" cy="23" r="1"/><circle cx="46" cy="24.5" r="1"/><circle cx="57" cy="25.5" r="1"/><circle cx="67" cy="24.5" r="1"/>
+  </g>
+  <circle cx="81" cy="12" r="1.5" fill="#f8f7f2"/><circle cx="81.4" cy="12.2" r=".7" fill="#122d23"/>
+  <path d="M76 7.5 C75 4 73 2.5 71 2 M80.5 7 C81.5 3.5 84 2 86 2" stroke="#122d23" stroke-width="1" fill="none" stroke-linecap="round"/>
+  <circle cx="71" cy="2" r="1" fill="#122d23"/><circle cx="86" cy="2" r="1" fill="#122d23"/>
+</svg>
