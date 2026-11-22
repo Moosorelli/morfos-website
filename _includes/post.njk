@@ -1,0 +1,9 @@
+---
+layout: base.njk
+---
+<article>
+  <h1>{{ title }}</h1>
+  <p class="meta"><time datetime="{{ page.date | isoDate }}">{{ page.date | svDate }}</time>{% if author %} · {{ author }}{% endif %}</p>
+  {{ content | safe }}
+</article>
+<a class="back" href="/blogg/">← Alla inlägg</a>

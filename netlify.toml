@@ -1,6 +1,11 @@
-# Plain static site: no build step, publish the repository root.
+# Built with Eleventy: blog posts in blogg/inlagg/ become pages under /blogg/.
+# The home page (index.html) and assets are copied as they are.
 [build]
-  publish = "."
+  command = "npm run build"
+  publish = "_site"
+
+[build.environment]
+  NODE_VERSION = "22"
 
 [[headers]]
   for = "/fonts/*"
