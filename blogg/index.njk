@@ -1,0 +1,21 @@
+---
+layout: base.njk
+title: Blogg
+permalink: /blogg/
+---
+<h1>Blogg</h1>
+<p class="lede">Tankar om e-lärande, kursdesign och kompetensutveckling från oss på Morfos.</p>
+
+{% if collections.posts.length %}
+<ul class="post-list">
+  {%- for post in collections.posts %}
+  <li>
+    <time datetime="{{ post.date | isoDate }}">{{ post.date | svDate }}</time>
+    <h2><a href="{{ post.url }}">{{ post.data.title }}</a></h2>
+    {% if post.data.description %}<p>{{ post.data.description }}</p>{% endif %}
+  </li>
+  {%- endfor %}
+</ul>
+{% else %}
+<p class="empty">Inga inlägg ännu – snart kommer de första.</p>
+{% endif %}
