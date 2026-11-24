@@ -1,0 +1,21 @@
+{
+  "trialCourses": [
+    {
+      "title": "Säker start vid maskinen",
+      "text": "Hitta riskerna, sätt stegen i rätt ordning och fatta beslut i ett verkligt scenario.",
+      "meta": "Ca 10 minuter · Produktion",
+      "url": ""
+    },
+    {
+      "title": "Lär känna Morfos",
+      "text": "En kort introduktion till hur vi bygger kurser och vad som gör att kunskap fastnar.",
+      "meta": "Ca 5 minuter · Introduktion",
+      "url": ""
+    }
+  ],
+  "testimonials": [],
+  "people": [
+    { "initials": "FB", "name": "Fredrik Bäck", "role": "Medgrundare & utbildningsutvecklare", "bio": "" },
+    { "initials": "TW", "name": "Tom Woodgate", "role": "Medgrundare & utbildningsutvecklare", "bio": "" }
+  ]
+}

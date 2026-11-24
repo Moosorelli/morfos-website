@@ -1,0 +1,58 @@
+---
+layout: base.njk
+title: Om oss
+description: Morfos Edtech Akademi drivs av två lärare som bygger e-kurser för företag av deras eget material.
+permalink: /om-oss/
+---
+<section class="wrap about-hero" aria-labelledby="about-title">
+  <div>
+    <p class="eyebrow">Om Morfos</p>
+    <h1 id="about-title">Vi är lärare som bygger kurser för företag.</h1>
+    <p class="lead">Namnet kommer från grekiskans <em>morphē</em>, form. Det är det vi gör: tar kunskap som redan finns i ert företag och ger den en form som är lätt att lära sig – och svår att glömma.</p>
+  </div>
+  <img src="/morfos-butterfly.svg" width="324" height="293" alt="">
+</section>
+
+<section class="wrap" aria-labelledby="team-title" style="padding-bottom: 80px">
+  <h2 id="team-title" class="h2">Vi som står bakom</h2>
+  <div class="bios">
+    {%- for p in site.people %}
+    <article class="bio">
+      <div class="bio-head">
+        <div class="initials" aria-hidden="true">{{ p.initials }}</div>
+        <div>
+          <h3>{{ p.name }}</h3>
+          <p class="role">{{ p.role }}</p>
+        </div>
+      </div>
+      {% if p.bio %}<p>{{ p.bio }}</p>{% else %}<p class="soon">Presentation kommer snart</p>{% endif %}
+    </article>
+    {%- endfor %}
+  </div>
+</section>
+
+<section class="dark" aria-labelledby="values-title">
+  <div class="wrap section">
+    <h2 id="values-title" class="h2" style="margin-bottom: 36px">Det här tror vi på</h2>
+    <div class="grid values">
+      <div>
+        <h3>Lärande som fastnar</h3>
+        <p>Korta avsnitt, repetition och att få använda kunskapen direkt. Metoder som forskningen visar fungerar.</p>
+      </div>
+      <div>
+        <h3>Ert material, er kurs</h3>
+        <p>Inga generiska paket. Varje kurs bygger på era rutiner, era maskiner och ert språk.</p>
+      </div>
+      <div>
+        <h3>Nära och personligt</h3>
+        <p>Vi är ett litet företag i Skaraborg. Ni pratar med samma personer från första mötet till färdig kurs.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="wrap closing" aria-labelledby="cta-title">
+  <h2 id="cta-title" class="h2">Vill ni ses och prata?</h2>
+  <p class="lead">Vi kommer gärna förbi och tittar på ert material.</p>
+  <a class="btn" href="mailto:info@morfos.se">Mejla info@morfos.se</a>
+</section>

@@ -2,8 +2,13 @@
 
 Website for Morfos Edtech Akademi, deployed by Netlify (project `morfos-se`) on every push to `main`.
 
-- `index.html`: the home page, plain HTML, copied as it is.
-- `blogg/`: the blog at morfos.se/blogg/, built with [Eleventy](https://www.11ty.dev/).
+Built with [Eleventy](https://www.11ty.dev/):
+
+- `index.njk`: the home page; `om-oss/index.njk`: the About page.
+- `_includes/base.njk`: header (with the gold "Logga in i Akademin" button) and footer for every page.
+- `_data/site.json`: the trial courses, testimonials and the two of you. Give a trial course a `url` to switch its button on; add testimonials (`quote`, `name`, `role`) to show that section; add a `bio` to replace "Presentation kommer snart".
+- `css/site.css`: all styles. `media/`: the cocoon splash video and its poster.
+- `blogg/`: the blog at morfos.se/blogg/.
 - Font: Outfit (SIL Open Font License, see `fonts/LICENSE-outfit.txt`), self-hosted.
 
 ## Writing a blog post

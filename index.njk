@@ -1,0 +1,137 @@
+---
+layout: base.njk
+permalink: /
+---
+<section class="wrap hero" aria-labelledby="hero-title">
+  <div class="hero-text">
+    <p class="eyebrow">E-kurser byggda av era egna rutiner</p>
+    <h1 id="hero-title">Kunskap som<br>får form.</h1>
+    <p class="lead">Ni har kunskapen i pärmar, presentationer och huvudet på era bästa medarbetare. Vi gör om den till interaktiva e-kurser som nyanställda faktiskt minns – och visar er vem som har gått dem.</p>
+    <div class="btn-row">
+      <a class="btn" href="#provkurser">Prova en kurs</a>
+      <a class="btn btn-line" href="mailto:info@morfos.se">Berätta vad ni vill lära ut</a>
+    </div>
+  </div>
+  <div class="hero-media">
+    <div class="splash">
+      <video id="splash" muted playsinline preload="auto" poster="/media/morfos-splash-cocoon-poster.jpg" aria-label="En kokong öppnas och blir Morfos-logotypen">
+        <source src="/media/morfos-splash-cocoon.mp4" type="video/mp4">
+      </video>
+    </div>
+  </div>
+</section>
+
+<section id="sa-fungerar-det" class="band" aria-labelledby="how-title">
+  <div class="wrap section">
+    <div class="intro">
+      <h2 id="how-title" class="h2">Från pärm till kurs i tre steg</h2>
+      <p class="lead">Ni behöver inte skriva om något. Vi utgår från det material ni redan har.</p>
+    </div>
+    <ol class="steps grid">
+      <li>
+        <span class="step-no" aria-hidden="true">1</span>
+        <h3>Ni skickar materialet</h3>
+        <p>Instruktioner, rutiner, presentationer eller en film från golvet. Vi ställer frågorna som behövs.</p>
+      </li>
+      <li>
+        <span class="step-no" aria-hidden="true">2</span>
+        <h3>Vi bygger kursen</h3>
+        <p>Korta avsnitt, scenarier och övningar med återkoppling, byggda på forskning om hur vi lär och minns.</p>
+      </li>
+      <li>
+        <span class="step-no" aria-hidden="true">3</span>
+        <h3>Era medarbetare lär sig</h3>
+        <p>Kursen ligger i Morfos Akademi. Ni ser vem som har startat, slutfört och klarat den.</p>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<section id="provkurser" class="wrap section" aria-labelledby="trial-title">
+  <div class="intro">
+    <h2 id="trial-title" class="h2">Prova själv</h2>
+    <p class="lead">Gå en kort provkurs och se hur det känns att lära sig med Morfos. Ingen inloggning behövs.</p>
+  </div>
+  <div class="grid">
+    {%- for c in site.trialCourses %}
+    <article class="card">
+      <div class="card-art">
+        <img src="/morfos-butterfly.svg" width="324" height="293" alt="">
+        <span class="badge">{% if c.url %}Provkurs{% else %}Kommer snart{% endif %}</span>
+      </div>
+      <div class="card-body">
+        <h3>{{ c.title }}</h3>
+        <p class="text">{{ c.text }}</p>
+        <p class="meta">{{ c.meta }}</p>
+        {% if c.url %}
+        <a class="btn btn-small" href="{{ c.url }}">Starta provkursen</a>
+        {% else %}
+        <button class="btn btn-small" type="button" disabled>Kommer snart</button>
+        {% endif %}
+      </div>
+    </article>
+    {%- endfor %}
+  </div>
+</section>
+
+<section class="dark" aria-labelledby="team-title">
+  <div class="wrap section team">
+    <div class="team-text">
+      <h2 id="team-title" class="h2">Pedagoger i grunden</h2>
+      <p>Morfos drivs av två lärare med lång erfarenhet av att få människor att förstå och komma ihåg. Nu använder vi den erfarenheten för företag.</p>
+      <a class="more" href="/om-oss/">Läs mer om oss →</a>
+    </div>
+    <div class="team-people">
+      {%- for p in site.people %}
+      <div class="person">
+        <div class="initials" aria-hidden="true">{{ p.initials }}</div>
+        <div><p class="name">{{ p.name }}</p><p class="role">{{ p.role }}</p></div>
+      </div>
+      {%- endfor %}
+    </div>
+  </div>
+</section>
+
+{% if site.testimonials.length %}
+<section class="wrap section" aria-labelledby="quotes-title">
+  <h2 id="quotes-title" class="h2" style="margin-bottom: 32px">Vad våra kunder säger</h2>
+  <div class="grid">
+    {%- for q in site.testimonials %}
+    <figure class="bio" style="margin: 0">
+      <blockquote style="margin: 0; font-size: 1.25rem; line-height: 1.5">”{{ q.quote }}”</blockquote>
+      <figcaption style="color: var(--muted)"><strong style="color: var(--ink)">{{ q.name }}</strong>, {{ q.role }}</figcaption>
+    </figure>
+    {%- endfor %}
+  </div>
+</section>
+{% endif %}
+
+{% set latest = collections.posts | first %}
+{% if latest %}
+<section class="band" aria-labelledby="blog-title">
+  <div class="wrap blog-teaser">
+    <div>
+      <p class="eyebrow">Från bloggen</p>
+      <h2 id="blog-title"><a href="{{ latest.url }}">{{ latest.data.title }}</a></h2>
+    </div>
+    <a class="btn btn-line" href="/blogg/">Läs bloggen</a>
+  </div>
+</section>
+{% endif %}
+
+<section class="wrap closing" aria-labelledby="cta-title">
+  <img src="/morfos-caterpillar.svg" width="1165" height="310" alt="">
+  <h2 id="cta-title" class="h2">Vilken rutin skulle ni vilja att alla kunde?</h2>
+  <p class="lead">Berätta om den, så visar vi hur den skulle se ut som kurs. Det kostar ingenting att fråga.</p>
+  <a class="btn" href="mailto:info@morfos.se">Mejla info@morfos.se</a>
+</section>
+
+<script>
+  // The splash plays once and stops on the logo. With reduced motion, only the final frame shows.
+  (function () {
+    var v = document.getElementById("splash");
+    if (!v || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    var p = v.play();
+    if (p && p.catch) p.catch(function () {});
+  })();
+</script>

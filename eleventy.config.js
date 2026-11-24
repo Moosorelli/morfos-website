@@ -1,9 +1,10 @@
 import { feedPlugin } from "@11ty/eleventy-plugin-rss";
 
 export default function (eleventyConfig) {
-  // The home page and assets are plain files: copy them as they are.
-  eleventyConfig.addPassthroughCopy("index.html");
+  // Assets are plain files: copy them as they are.
   eleventyConfig.addPassthroughCopy("fonts");
+  eleventyConfig.addPassthroughCopy("css");
+  eleventyConfig.addPassthroughCopy("media");
   eleventyConfig.addPassthroughCopy("*.{png,webp,svg,ico}");
   eleventyConfig.addPassthroughCopy({ "blogg/bilder": "blogg/bilder" });
 
