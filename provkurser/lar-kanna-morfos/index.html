@@ -538,6 +538,16 @@ function renderTopbar(){
   });
   ta.appendChild(rb);
 
+  /* Website version only: a way back to morfos.se */
+  const xb = document.createElement('a');
+  xb.className = "pill-btn";
+  xb.href = "/";
+  xb.textContent = "✕ Avsluta";
+  xb.title = "Tillbaka till morfos.se";
+  xb.setAttribute("aria-label", "Avsluta kursen och gå tillbaka till morfos.se");
+  xb.style.textDecoration = "none";
+  ta.appendChild(xb);
+
   const st = document.getElementById('stepper');
   st.innerHTML = "";
   const idx = SCREENS.indexOf(state.screen);
@@ -948,6 +958,7 @@ function renderEnd(){
       <div class="contact-actions">
         <a class="btn btn-primary" href="mailto:${escAttr(email)}?subject=${subject}">Skicka ett mejl</a>
         ${fLink ? `<a class="btn btn-secondary" href="${escAttr(fLink)}" target="_blank" rel="noopener">Läs mer om Fredrik</a>` : ""}
+        <a class="btn btn-secondary" href="/">Tillbaka till morfos.se</a>
       </div>
     </div>`;
   chips(w.querySelector('#endChips'), ["retrieval","feedback","contrast","cognitive_load","generation","situated"], "dark");
