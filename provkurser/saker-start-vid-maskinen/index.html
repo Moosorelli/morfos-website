@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Säker start vid maskinen – demokurs</title>
+<meta name="robots" content="noindex">
+<meta name="description" content="Provkurs från Morfos Edtech Akademi: säker start vid pelarborren.">
+<link rel="icon" type="image/png" sizes="32x32" href="/icon-32.png">
+<style>
+@font-face{font-family:"Barlow";font-weight:400;font-display:swap;src:url(fonts/barlow-latin-400-normal.woff2) format("woff2")}
+@font-face{font-family:"Barlow";font-weight:500;font-display:swap;src:url(fonts/barlow-latin-500-normal.woff2) format("woff2")}
+@font-face{font-family:"Barlow";font-weight:600;font-display:swap;src:url(fonts/barlow-latin-600-normal.woff2) format("woff2")}
+@font-face{font-family:"Barlow Condensed";font-weight:600;font-display:swap;src:url(fonts/barlow-condensed-latin-600-normal.woff2) format("woff2")}
+@font-face{font-family:"Barlow Condensed";font-weight:700;font-display:swap;src:url(fonts/barlow-condensed-latin-700-normal.woff2) format("woff2")}
+
+:root{
+  --paper:#F2F4F5; --card:#FFFFFF; --steel:#2B3640; --steel-2:#55626C;
+  --line:#C9D0D4; --sign:#F2C200; --machine:#5E7F6F; --ok:#1E7A46; --ok-bg:#E3F2E9;
+  --stop:#C62828; --stop-bg:#FBE7E7;
+  --f-body:"Barlow", "Segoe UI", Arial, sans-serif;
+  --f-head:"Barlow Condensed", "Arial Narrow", Arial, sans-serif;
+}
+*{box-sizing:border-box}
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+html,body{margin:0;height:100%}
+body{background:var(--paper);color:var(--steel);font:17px/1.55 var(--f-body);display:flex;flex-direction:column;min-height:100%}
+button{font:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--steel);outline-offset:2px}
+h1[tabindex]:focus,h2[tabindex]:focus{outline:none}
+
+/* header */
+.top{display:flex;align-items:center;gap:14px;padding:12px 20px;background:var(--card);border-bottom:4px solid var(--sign)}
+.langsw{display:inline-flex;gap:4px;flex:none}
+.langsw button{border:2px solid transparent;background:transparent;border-radius:5px;padding:2px;line-height:0;opacity:.55}
+.langsw button:hover{opacity:.85}
+.langsw button[aria-pressed="true"]{border-color:var(--steel);opacity:1}
+.langsw svg{height:18px;width:auto;display:block;border-radius:2px;box-shadow:0 0 0 1px rgba(0,0,0,.12)}
+.logo{display:flex;align-items:center;gap:10px;font:700 18px/1 var(--f-head);letter-spacing:.02em}
+.logo svg{width:34px;height:34px}
+.course-title{margin-left:auto;font-size:15px;color:var(--steel-2)}
+.progress{display:flex;gap:4px;padding:10px 20px 0;max-width:980px;margin:0 auto;width:100%}
+.progress span{flex:1;height:6px;border-radius:3px;background:var(--line)}
+.progress span.done{background:var(--machine)}
+.progress span.now{background:var(--steel)}
+.steplabel{max-width:980px;margin:6px auto 0;width:100%;padding:0 20px;font-size:14px;color:var(--steel-2)}
+
+main{flex:1;width:100%;max-width:980px;margin:0 auto;padding:18px 20px 24px}
+.screen{display:none}
+.screen.active{display:block}
+h1,h2{font-family:var(--f-head);font-weight:700;line-height:1.1;margin:0 0 12px}
+h1{font-size:clamp(34px,6vw,54px)}
+h2{font-size:clamp(28px,4.5vw,38px)}
+p{margin:0 0 14px;max-width:66ch}
+.lead{font-size:20px}
+.muted{color:var(--steel-2)}
+
+/* nav */
+.nav{display:flex;align-items:center;gap:12px;margin-top:22px}
+.btn{border:2px solid var(--steel);background:var(--steel);color:#fff;padding:11px 22px;border-radius:6px;font-weight:600}
+.btn.ghost{background:transparent;color:var(--steel)}
+.btn:disabled{opacity:.35;cursor:not-allowed}
+.nav .hint{font-size:15px;color:var(--steel-2)}
+
+/* sales notes */
+.note{display:none;background:#FFF6CC;border-left:5px solid var(--sign);padding:10px 14px;margin:14px 0;font-size:15px;max-width:66ch;border-radius:0 6px 6px 0}
+body.demo .note{display:block}
+.note b{display:block;font-family:var(--f-head);font-size:17px;margin-bottom:2px}
+
+/* welcome */
+.welcome{display:grid;grid-template-columns:1.2fr 1fr;gap:28px;align-items:center}
+.welcome .badge{background:var(--steel);color:#fff;border-radius:10px;padding:22px}
+.welcome .badge dl{display:grid;grid-template-columns:auto 1fr;gap:6px 14px;margin:0;font-size:16px}
+.welcome .badge dt{color:#AEB9C0}
+.sign{width:84px;height:84px;margin-bottom:14px}
+
+/* before doc */
+.before{display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:start}
+.scan{background:#FDFDF8;border:1px solid #D9D6C8;padding:22px 24px;transform:rotate(-1.2deg);box-shadow:3px 4px 0 #D9D6C8;font:14px/1.5 "Courier New",Courier,monospace;color:#333}
+.scan h3{font:700 15px/1.3 "Courier New",monospace;margin:0 0 8px;text-decoration:underline}
+.scan ol{padding-left:20px;margin:6px 0}
+.scan .stamp{display:inline-block;border:2px solid #A33;color:#A33;padding:2px 8px;transform:rotate(-6deg);margin-top:10px;font-weight:700}
+.arrow-list{list-style:none;padding:0;margin:0}
+.arrow-list li{padding:10px 0;border-bottom:1px solid var(--line)}
+
+/* story */
+.story{display:grid;grid-template-columns:200px 1fr;gap:24px;align-items:start}
+.lang{display:inline-flex;border:2px solid var(--steel);border-radius:6px;overflow:hidden;margin-bottom:14px}
+.lang button{border:0;background:transparent;padding:6px 14px;font-weight:600;color:var(--steel)}
+.lang button[aria-pressed="true"]{background:var(--steel);color:#fff}
+.portrait{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px;text-align:center}
+.portrait svg{width:120px;height:120px}
+.portrait div{font-weight:600}
+.speech{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px 18px;margin-top:6px;position:relative}
+
+/* hotspots */
+.scene-wrap{position:relative;background:var(--card);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.scene-wrap svg,.scene-wrap img{display:block;width:100%;height:auto}
+.hot{position:absolute;transform:translate(-50%,-50%);width:10%;aspect-ratio:1;border-radius:50%;border:3px dashed transparent;background:transparent}
+.hot:hover{border-color:rgba(43,54,64,.35)}
+.hot.found{border:4px solid var(--ok);background:rgba(30,122,70,.12)}
+.hot.found::after{content:attr(data-n);position:absolute;top:-12px;right:-12px;width:28px;height:28px;border-radius:50%;background:var(--ok);color:#fff;font:700 16px/28px var(--f-body);text-align:center}
+.found-list{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:14px}
+.found-item{border:1px dashed var(--line);border-radius:8px;padding:10px 12px;font-size:15px;color:var(--steel-2);min-height:64px}
+.found-item.ok{border:1px solid var(--ok);background:var(--ok-bg);color:var(--steel)}
+.found-item strong{display:block}
+.miss{min-height:24px;font-size:15px;color:var(--steel-2);margin-top:8px}
+
+/* ordering */
+.order{list-style:none;padding:0;margin:0;max-width:640px}
+.order li{display:flex;align-items:center;gap:12px;background:var(--card);border:2px solid var(--line);border-radius:8px;padding:12px 14px;margin-bottom:8px;cursor:grab;user-select:none;-webkit-user-select:none;touch-action:none;position:relative}
+.order li:hover{border-color:var(--steel-2)}
+.order li .grip{width:12px;height:20px;flex:none;background:radial-gradient(circle,var(--steel-2) 1.6px,transparent 1.9px) 0 0/6px 6.6px}
+.order li .pos{font:700 22px/1 var(--f-head);width:26px;color:var(--steel-2)}
+.order li .txt{flex:1}
+.order li.dragging{cursor:grabbing;z-index:2;border-color:var(--steel);box-shadow:0 8px 18px rgba(43,54,64,.22)}
+.order li.grabbed{border-color:var(--steel);border-style:dashed}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* teaching page: start-up check */
+.learn{list-style:none;padding:0;margin:8px 0 0;max-width:760px}
+.learn > li{display:grid;grid-template-columns:120px 1fr;gap:16px;padding:14px 0;border-top:2px solid var(--line)}
+.learn .grp{font:700 24px/1.1 var(--f-head);color:var(--machine)}
+.learn .st{margin-bottom:12px}
+.learn .st:last-child{margin-bottom:0}
+.learn .st b{display:block}
+.learn .st span{color:var(--steel-2);font-size:16px}
+.why{background:var(--card);border-left:5px solid var(--machine);padding:12px 16px;max-width:760px;margin-top:8px;border-radius:0 8px 8px 0}
+.why p{margin:0}
+@media (max-width:760px){ .learn > li{grid-template-columns:1fr;gap:6px} }
+.order li.right{border-color:var(--ok);background:var(--ok-bg)}
+.order li.wrong{border-color:var(--stop);background:var(--stop-bg)}
+.feedback{margin-top:12px;padding:12px 14px;border-radius:8px;max-width:640px;display:none}
+.feedback.show{display:block}
+.feedback.good{background:var(--ok-bg);border-left:5px solid var(--ok)}
+.feedback.bad{background:var(--stop-bg);border-left:5px solid var(--stop)}
+
+/* choices */
+.choices{display:grid;gap:10px;max-width:700px;margin-top:6px}
+.choice{text-align:left;background:var(--card);border:2px solid var(--line);border-radius:8px;padding:12px 14px;color:var(--steel)}
+.choice:hover:not(:disabled){border-color:var(--steel)}
+.choice.right{border-color:var(--ok);background:var(--ok-bg)}
+.choice.wrong{border-color:var(--stop);background:var(--stop-bg)}
+.choice:disabled{cursor:default}
+.jam{display:grid;grid-template-columns:1fr 240px;gap:24px;align-items:start}
+.jam svg{width:100%;height:auto;background:var(--card);border:1px solid var(--line);border-radius:10px}
+
+/* quiz */
+.qcount{font-size:15px;color:var(--steel-2);margin-bottom:4px}
+
+/* result */
+.cert{background:var(--card);border:2px solid var(--steel);border-radius:10px;padding:26px;max-width:620px;position:relative;overflow:hidden}
+.cert::before{content:"";position:absolute;inset:0 0 auto 0;height:10px;background:repeating-linear-gradient(-45deg,var(--sign) 0 14px,var(--steel) 14px 28px)}
+.cert .score{font:700 64px/1 var(--f-head);margin:10px 0}
+.cert.fail{border-color:var(--stop)}
+.lmsline{display:flex;gap:10px;align-items:center;margin-top:16px;font-size:15px}
+.dot{width:12px;height:12px;border-radius:50%;background:var(--ok);flex:none}
+.dot.off{background:var(--line)}
+
+.finish{text-align:center;padding:48px 0}
+.finish svg{width:72px;height:72px;margin-bottom:14px}
+.finish p{margin:0 auto}
+footer{display:flex;gap:16px;align-items:center;justify-content:space-between;flex-wrap:wrap;padding:10px 20px;font-size:14px;color:var(--steel-2);border-top:1px solid var(--line);background:var(--card)}
+.toggle{display:inline-flex;align-items:center;gap:8px;cursor:pointer}
+.toggle input{width:18px;height:18px;accent-color:var(--steel)}
+
+@media (max-width:760px){
+  body{font-size:16px}
+  .welcome,.before,.story,.jam{grid-template-columns:1fr}
+  .story .portrait{display:flex;align-items:center;gap:14px;text-align:left}
+  .story .portrait svg{width:70px;height:70px}
+  .found-list{grid-template-columns:1fr}
+  .hot{width:11%}
+  .course-title{display:none}
+}
+@media (prefers-reduced-motion:no-preference){
+  .screen.active{animation:in .25s ease-out}
+  @keyframes in{from{opacity:0}to{opacity:1}}
+}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="langsw" role="group" aria-label="Språk / Language">
+    <button type="button" data-setlang="sv" aria-pressed="true" aria-label="Svenska" title="Svenska"><svg viewBox="0 0 16 10" aria-hidden="true"><rect width="16" height="10" fill="#006AA7"/><rect x="5" width="2" height="10" fill="#FECC02"/><rect y="4" width="16" height="2" fill="#FECC02"/></svg></button>
+    <button type="button" data-setlang="en" aria-pressed="false" aria-label="English" title="English"><svg viewBox="0 0 60 30" aria-hidden="true"><clipPath id="ukt"><path d="M30,15h30v15zv15h-30zh-30v-15zv-15h30z"/></clipPath><rect width="60" height="30" fill="#012169"/><path d="M0,0L60,30M60,0L0,30" stroke="#fff" stroke-width="6"/><path d="M0,0L60,30M60,0L0,30" clip-path="url(#ukt)" stroke="#C8102E" stroke-width="4"/><path d="M30,0v30M0,15h60" stroke="#fff" stroke-width="10"/><path d="M30,0v30M0,15h60" stroke="#C8102E" stroke-width="6"/></svg></button>
+  </div>
+  <div class="logo" aria-label="Vänerns Mekaniska AB">
+    <svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="8" fill="#5E7F6F"/><path d="M8 28 L20 10 L32 28 Z" fill="none" stroke="#fff" stroke-width="3.5" stroke-linejoin="round"/><circle cx="20" cy="23" r="3.5" fill="#F2C200"/></svg>
+    Vänerns Mekaniska
+  </div>
+  <div class="course-title" data-i18n="ctitle">Säker start vid maskinen</div>
+</header>
+<div class="progress" id="progress" aria-hidden="true"></div>
+<div class="steplabel" id="steplabel"></div>
+
+<main>
+
+<!-- 0 Welcome -->
+<section class="screen" data-title="Välkommen">
+  <div class="welcome">
+    <div>
+      <svg class="sign" viewBox="0 0 100 100" aria-hidden="true"><path d="M50 6 L96 88 H4 Z" fill="#F2C200" stroke="#2B3640" stroke-width="6" stroke-linejoin="round"/><rect x="45" y="34" width="10" height="30" rx="3" fill="#2B3640"/><circle cx="50" cy="74" r="6" fill="#2B3640"/></svg>
+      <h1 data-i18n="h1">Säker start vid maskinen</h1>
+      <p class="lead" data-i18n="lead0">Varje dag startar någon en maskin för första gången. Den här kursen visar hur du gör det säkert – och vad du gör när något går fel.</p>
+      <div class="note" data-i18n="n0"><b>Så tänkte vi</b>Er logga, era färger och ert namn på kursen. Kunden ska känna igen sin egen arbetsplats från första skärmen.</div>
+    </div>
+    <div class="badge">
+      <dl data-i18n="badge">
+        <dt>Tid</dt><dd>Cirka 7 minuter</dd>
+        <dt>För</dt><dd>Nyanställda och alla som kör pelarborren</dd>
+        <dt>Du lär dig</dt><dd>Hitta risker, göra startkontrollen och agera när borret fastnar</dd>
+        <dt>Test</dt><dd>5 frågor, 4 rätt för godkänt</dd>
+      </dl>
+    </div>
+  </div>
+  <div class="nav"><button class="btn" data-next data-i18n="start">Starta kursen</button></div>
+</section>
+
+<!-- 1 Before -->
+<section class="screen" data-title="Underlaget">
+  <h2 data-i18n="h2a">Kursen bygger på er befintliga instruktion</h2>
+  <div class="before">
+    <div class="scan" data-i18n="scan" data-i18n-aria="scanaria" aria-label="Exempel på originalinstruktion">
+      <h3>ARBETSINSTRUKTION AI-114 – PELARBORR</h3>
+      Rev. 3 &nbsp; Godkänd: K.L.<br><br>
+      Före start:
+      <ol>
+        <li>Kontrollera skydd</li>
+        <li>Kontrollera nödstopp</li>
+        <li>Golvet ska vara rent</li>
+        <li>Skyddsglasögon. Ej handskar.</li>
+        <li>Arbetsstycket fastspänt</li>
+        <li>Provkör</li>
+      </ol>
+      Vid stopp/fastkörning: stäng av, LMP enl. rutin 7.2.<br>
+      Avvikelser rapporteras till arbetsledare.
+      <br><span class="stamp">GÄLLANDE</span>
+    </div>
+    <div>
+      <p data-i18n="pbin">Den här sidan sitter i en pärm vid maskinen. Den är korrekt – men få läser den, och ingen vet vem som har förstått den.</p>
+      <ul class="arrow-list" data-i18n="blist">
+        <li>Samma innehåll, nu med bilder från verkstaden</li>
+        <li>Övningar där man gör rätt i stället för att läsa om det</li>
+        <li>Ett kort test – och ett resultat ni kan visa vid revision</li>
+      </ul>
+      <div class="note" data-i18n="n1"><b>Så tänkte vi</b>Det här är det enda kunden behöver skicka: en pärmsida, en PowerPoint eller några foton. Vi gör resten.</div>
+    </div>
+  </div>
+  <div class="nav"><button class="btn ghost" data-prev data-i18n="back">Tillbaka</button><button class="btn" data-next data-i18n="cont">Fortsätt</button></div>
+</section>
+
+<!-- 2 Story -->
+<section class="screen" data-title="Möt Sara">
+  <div class="story">
+    <div class="portrait">
+      <svg viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="58" fill="#E3E8EA"/><circle cx="60" cy="48" r="20" fill="#C69C7D"/><path d="M38 44 Q40 24 60 24 Q82 24 82 46 Q76 36 60 34 Q46 36 38 44Z" fill="#6B4A32"/><path d="M22 112 Q26 78 60 76 Q94 78 98 112Z" fill="#5E7F6F"/><rect x="40" y="40" width="40" height="10" rx="5" fill="none" stroke="#2B3640" stroke-width="3"/></svg>
+      <div data-i18n="age">Sara, 24 år</div>
+      <span class="muted" data-i18n="role">Ny på verkstaden</span>
+    </div>
+    <div>
+      <h2 data-i18n="h">Första dagen vid pelarborren</h2>
+      <p data-i18n="p1">Sara började i måndags. Hennes handledare har visat maskinen en gång, men nu har han ett möte och Sara ska borra tjugo fästen själv.</p>
+      <div class="speech" data-i18n="quote">”Det ser ju enkelt ut. Jag kör igång så länge – han kommer snart.”</div>
+      <p style="margin-top:14px" data-i18n="p2">Innan hon startar maskinen: titta på arbetsplatsen. Fyra saker är fel. Kan du hitta dem?</p>
+    </div>
+  </div>
+  <div class="note" data-i18n="n2"><b>Så tänkte vi</b>Kursen kan göras på flera språk – byt med flaggorna uppe till vänster. Vanligt på arbetsplatser där alla inte har svenska som förstaspråk.</div>
+  <div class="nav"><button class="btn ghost" data-prev data-i18n="back">Tillbaka</button><button class="btn" data-next data-i18n="next">Hitta riskerna</button></div>
+</section>
+
+<!-- 3 Hotspots -->
+<section class="screen" data-title="Hitta riskerna">
+  <h2 data-i18n="h2b">Hitta de fyra riskerna</h2>
+  <p data-i18n="pclick">Klicka på det som är fel innan Sara startar maskinen.</p>
+  <div class="scene-wrap" id="scene">
+    <img class="scene-img" data-i18n-alt="imgalt" src="verkstad.jpg" width="1200" height="819" alt="Verkstad med en röd pelarborr. Chuckskyddet är uppfällt, ett träblock ligger löst på borrbordet, kartonger är staplade framför nödstoppet och det ligger plast och spån på golvet.">
+    <button class="hot" style="left:46.4%;top:9.5%" data-hz="0" data-n="1" aria-label="Chuckskyddet"></button>
+    <button class="hot" style="left:54.7%;top:37.8%" data-hz="1" data-n="2" aria-label="Träblocket på borrbordet"></button>
+    <button class="hot" style="left:19.5%;top:16%" data-hz="2" data-n="3" aria-label="Nödstoppet bakom kartongerna"></button>
+    <button class="hot" style="left:16%;top:89%" data-hz="3" data-n="4" aria-label="Golvet bredvid maskinen"></button>
+  </div>
+  <div class="miss" id="miss" aria-live="polite"></div>
+  <div class="found-list" id="foundList"></div>
+  <div class="note" data-i18n="n3"><b>Så tänkte vi</b>I en riktig kurs använder vi foton från er egen verkstad. Medarbetarna känner igen sin maskin – det gör skillnad.</div>
+  <div class="nav"><button class="btn ghost" data-prev data-i18n="back">Tillbaka</button><button class="btn" data-next id="hzNext" disabled data-i18n="cont">Fortsätt</button><span class="hint" id="hzHint">0 av 4 hittade</span></div>
+</section>
+
+<!-- 4 Teach the start-up check -->
+<section class="screen" data-title="Så gör du startkontrollen">
+  <h2 data-i18n="h2c">Så gör du startkontrollen</h2>
+  <p class="lead" data-i18n="lead1">Arbeta utifrån och in: först platsen, sedan maskinen, sedan du själv – och sist arbetet.</p>
+  <ol class="learn" data-i18n="learn">
+    <li><span class="grp">Platsen</span>
+      <div>
+        <div class="st"><b>1. Gå runt maskinen: golvet rent och inget i vägen</b><span>Du ska kunna stå stadigt och snabbt komma undan. Det var här plasten och spånen låg.</span></div>
+      </div></li>
+    <li><span class="grp">Maskinen</span>
+      <div>
+        <div class="st"><b>2. Kontrollera att alla skydd är på plats och hela</b><span>Är chuckskyddet uppfällt eller trasigt startar du inte.</span></div>
+        <div class="st"><b>3. Kontrollera att nödstoppet är fritt och fungerar</b><span>Tryck in det och återställ. Inget får stå framför det – som kartongerna gjorde.</span></div>
+      </div></li>
+    <li><span class="grp">Du själv</span>
+      <div>
+        <div class="st"><b>4. Skyddsglasögon på – inga handskar, inga lösa ärmar</b><span>Glasögonen ska sitta på dig, inte hänga på kroken. Handskar och ärmar kan fastna i det som roterar.</span></div>
+      </div></li>
+    <li><span class="grp">Arbetet</span>
+      <div>
+        <div class="st"><b>5. Spänn fast arbetsstycket i skruvstycket</b><span>Ett löst arbetsstycke kan rycka med i rotationen.</span></div>
+        <div class="st"><b>6. Provkör utan last och lyssna efter missljud</b><span>Känn efter vibrationer innan du börjar borra. Låter något fel: stoppa och rapportera.</span></div>
+      </div></li>
+  </ol>
+  <div class="why"><p data-i18n="why"><b>Varför i den ordningen?</b> Maskinen ska vara säker innan du ställer dig vid den, och du ska vara klar själv innan arbetsstycket spänns fast och maskinen startas.</p></div>
+  <div class="note" data-i18n="n4"><b>Så tänkte vi</b>Varje övning bygger på något kursen först har visat. Riskerna från förra skärmen kopplas här ihop med rätt rutin.</div>
+  <div class="nav"><button class="btn ghost" data-prev data-i18n="back">Tillbaka</button><button class="btn" data-next data-i18n="practise">Öva startkontrollen</button></div>
+</section>
+
+<!-- 5 Ordering -->
+<section class="screen" data-title="Öva startkontrollen">
+  <h2 data-i18n="h2d">Startkontrollen i rätt ordning</h2>
+  <p data-i18n="pturn">Nu är det Saras tur. Dra stegen till rätt ordning – kom ihåg: utifrån och in.</p>
+  <ol class="order" id="order" aria-describedby="orderHelp"></ol>
+  <div id="orderHelp" class="sr" data-i18n="ohelp">Med tangentbord: välj ett steg med mellanslag, flytta med pil upp och pil ned, och släpp med mellanslag.</div>
+  <div id="orderLive" class="sr" aria-live="assertive"></div>
+  <div class="nav" style="margin-top:12px"><button class="btn ghost" id="checkOrder" data-i18n="check">Kontrollera ordningen</button></div>
+  <div class="feedback" id="orderFb" aria-live="polite"></div>
+  <div class="nav"><button class="btn ghost" data-prev data-i18n="back">Tillbaka</button><button class="btn" data-next id="orderNext" disabled data-i18n="cont">Fortsätt</button></div>
+</section>
+
+<!-- 5 Scenario -->
+<section class="screen" data-title="Borret fastnar">
+  <div class="jam">
+    <div>
+      <h2 data-i18n="h2e">Borret har fastnat</h2>
+      <p data-i18n="pjam">Halvvägs genom det tredje fästet tar det stopp. Motorn brummar, borret sitter fast i arbetsstycket. Vad ska Sara göra?</p>
+      <div class="choices" id="jamChoices"></div>
+      <div class="feedback" id="jamFb" aria-live="polite"></div>
+    </div>
+    <svg viewBox="0 0 240 240" aria-hidden="true">
+      <rect x="60" y="20" width="120" height="70" rx="10" fill="#5E7F6F"/>
+      <rect x="108" y="90" width="24" height="40" fill="#9AA6AB"/>
+      <line x1="120" y1="130" x2="120" y2="175" stroke="#55626C" stroke-width="6"/>
+      <rect x="70" y="168" width="100" height="30" rx="3" fill="#B48A5A"/>
+      <rect x="40" y="198" width="160" height="12" fill="#4C6A5C"/>
+      <g stroke="#C62828" stroke-width="4" stroke-linecap="round"><path d="M150 140 l18 -10"/><path d="M152 154 l22 0"/><path d="M90 140 l-18 -10"/><path d="M88 154 l-22 0"/></g>
+    </svg>
+  </div>
+  <div class="note" data-i18n="n5"><b>Så tänkte vi</b>Här ser kunden skillnaden mot en pärm: medarbetaren får välja – och ser konsekvensen av fel val, utan att någon skadas.</div>
+  <div class="nav"><button class="btn ghost" data-prev data-i18n="back">Tillbaka</button><button class="btn" data-next id="jamNext" disabled data-i18n="totest">Till testet</button></div>
+</section>
+
+<!-- 6 Quiz -->
+<section class="screen" data-title="Kunskapstest">
+  <div class="qcount" id="qcount"></div>
+  <h2 id="qtext"></h2>
+  <div class="choices" id="qchoices"></div>
+  <div class="feedback" id="qfb" aria-live="polite"></div>
+  <div class="nav"><button class="btn" id="qnext" disabled>Nästa fråga</button></div>
+</section>
+
+<!-- 7 Result -->
+<section class="screen" data-title="Resultat">
+  <div class="cert" id="cert">
+    <h2 id="resTitle"></h2>
+    <div class="score" id="resScore"></div>
+    <p id="resText"></p>
+    <div class="lmsline"><span class="dot" id="lmsDot"></span><span id="lmsText"></span></div>
+  </div>
+  <div class="note" data-i18n="n6"><b>Så tänkte vi</b>Resultatet sparas i lärplattformen. Chefen ser vem som har gjort kursen, när och med vilket resultat – underlag för revision, ISO och försäkringsbolag.</div>
+  <div class="nav"><button class="btn" id="exitBtn" data-i18n="exit">Avsluta kursen</button><button class="btn ghost" id="retry" data-i18n="retry">Gör om testet</button><button class="btn ghost" id="restart" data-i18n="restart">Börja om kursen</button></div>
+</section>
+
+<div class="finish" id="donePanel" hidden>
+  <svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="30" fill="#1E7A46"/><path d="M18 33 l9 9 l19 -20" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  <h2 data-i18n="doneH">Kursen är avslutad</h2>
+  <p data-i18n="doneP">Tack för att du gick kursen! Vill du ha en sådan kurs av ert eget material? <a href="/">Tillbaka till morfos.se</a></p>
+</div>
+
+</main>
+
+<footer>
+  <a href="/" data-i18n="made" style="color:inherit">Producerad av Morfos Edtech Akademi</a>
+  <label class="toggle"><input type="checkbox" id="demoToggle"> <span data-i18n="notes">Visa hur vi har tänkt</span></label>
+</footer>
+
+<script>
+/* ---------- SCORM 1.2 (falls back to standalone mode) ---------- */
+var SCORM = (function(){
+  var api = null;
+  function find(w){ var n=0; while(w && !w.API && w.parent && w.parent!==w && n<10){ w=w.parent; n++; } return w && w.API ? w.API : null; }
+  try { api = find(window) || (window.opener ? find(window.opener) : null); } catch(e){ api = null; }
+  var started = Date.now(), finished = false;
+  function set(k,v){ if(api) api.LMSSetValue(k, String(v)); }
+  function get(k){ return api ? api.LMSGetValue(k) : ""; }
+  function pad(n){ return (n<10?"0":"")+n; }
+  return {
+    connected: function(){ return !!api; },
+    init: function(){
+      if(!api) return;
+      api.LMSInitialize("");
+      var st = get("cmi.core.lesson_status");
+      if(st==="not attempted" || st==="") set("cmi.core.lesson_status","incomplete");
+      api.LMSCommit("");
+    },
+    learner: function(){ var n = get("cmi.core.student_name"); if(!n) return ""; var p = n.split(","); return p.length>1 ? (p[1].trim()+" "+p[0].trim()) : n; },
+    report: function(pct, passed){
+      if(!api) return;
+      set("cmi.core.score.min",0); set("cmi.core.score.max",100); set("cmi.core.score.raw",pct);
+      set("cmi.core.lesson_status", passed ? "passed" : "failed");
+      api.LMSCommit("");
+    },
+    finish: function(){
+      if(!api || finished) return; finished = true;
+      var s = Math.round((Date.now()-started)/1000);
+      set("cmi.core.session_time", pad(Math.floor(s/3600))+":"+pad(Math.floor(s/60)%60)+":"+pad(s%60));
+      api.LMSCommit(""); api.LMSFinish("");
+    }
+  };
+})();
+SCORM.init();
+window.addEventListener("pagehide", SCORM.finish);
+window.addEventListener("beforeunload", SCORM.finish);
+
+/* ---------- navigation ---------- */
+var screens = Array.prototype.slice.call(document.querySelectorAll(".screen"));
+var current = 0;
+var progress = document.getElementById("progress");
+screens.forEach(function(){ progress.appendChild(document.createElement("span")); });
+function show(i){
+  current = Math.max(0, Math.min(screens.length-1, i));
+  screens.forEach(function(s,k){ s.classList.toggle("active", k===current); });
+  Array.prototype.forEach.call(progress.children, function(b,k){ b.className = k<current ? "done" : (k===current ? "now" : ""); });
+  updateStepLabel();
+  window.scrollTo(0,0);
+  var h = screens[current].querySelector("h1,h2"); if(h){ h.setAttribute("tabindex","-1"); h.focus({preventScroll:true}); }
+  if(current===7) startQuiz();
+}
+document.addEventListener("click", function(e){
+  if(e.target.closest("[data-next]") && !e.target.closest("[data-next]").disabled) show(current+1);
+  if(e.target.closest("[data-prev]")) show(current-1);
+});
+
+/* ---------- sales notes toggle (?demo=1 turns it on) ---------- */
+var tg = document.getElementById("demoToggle");
+tg.checked = /[?&]demo=1/.test(location.search) || location.hash === "#demo";
+function applyDemo(){ document.body.classList.toggle("demo", tg.checked); }
+tg.addEventListener("change", applyDemo); applyDemo();
+
+/* ---------- languages ---------- */
+var LANG = "sv";
+var SV = {}, SV_ALT = {}, SV_ARIA = {}, SV_TITLES = [];
+var EN = {
+  ctitle:"Machine Safety",
+  h1:"Machine Safety",
+  lead0:"Every day someone starts a machine for the first time. This course shows how to do it safely – and what to do when something goes wrong.",
+  n0:"<b>Why we built it this way</b>Your logo, your colours and your name on the course. Customers should recognise their own workplace from the very first screen.",
+  n1:"<b>Why we built it this way</b>This is all the customer needs to send: a page from a binder, a PowerPoint or a few photos. We do the rest.",
+  n2:"<b>Why we built it this way</b>The course can be made in several languages – switch with the flags at the top left. Common in workplaces where not everyone speaks Swedish as a first language.",
+  n3:"<b>Why we built it this way</b>In a real course we use photos from your own workshop. Staff recognise their own machine – it makes a difference.",
+  n4:"<b>Why we built it this way</b>Every exercise builds on something the course has shown first. The hazards from the previous screen are linked here to the right routine.",
+  n5:"<b>Why we built it this way</b>This is where the customer sees the difference from a binder: the employee makes a choice – and sees the consequence of a wrong one, without anyone getting hurt.",
+  n6:"<b>Why we built it this way</b>The result is saved in the learning platform. The manager can see who has done the course, when and with what result – evidence for audits, ISO and insurers.",
+  badge:"<dt>Time</dt><dd>About 7 minutes</dd><dt>For</dt><dd>New starters and everyone who uses the pillar drill</dd><dt>You learn</dt><dd>To spot hazards, do the start-up check and act when the drill bit jams</dd><dt>Test</dt><dd>5 questions, 4 correct to pass</dd>",
+  start:"Start the course",
+  h2a:"The course is built on your existing instruction",
+  scan:'<h3>WORK INSTRUCTION AI-114 – PILLAR DRILL</h3>Rev. 3 &nbsp; Approved: K.L.<br><br>Before start:<ol><li>Check guards</li><li>Check emergency stop</li><li>Floor must be clean</li><li>Safety glasses. No gloves.</li><li>Workpiece clamped</li><li>Test run</li></ol>In case of stop/jam: switch off, LOTO per routine 7.2.<br>Deviations are reported to the supervisor.<br><span class="stamp">CURRENT</span>',
+  pbin:"This page sits in a binder by the machine. It is correct – but few people read it, and nobody knows who has understood it.",
+  blist:"<li>The same content, now with photos from the workshop</li><li>Exercises where you do it right instead of reading about it</li><li>A short test – and a result you can show at an audit</li>",
+  back:"Back", cont:"Continue",
+  age:"Sara, 24", role:"New in the workshop", h:"First day at the pillar drill",
+  p1:"Sara started on Monday. Her supervisor showed her the machine once, but now he’s in a meeting and Sara has to drill twenty brackets on her own.",
+  quote:"“It looks easy enough. I’ll get started – he’ll be back soon.”",
+  p2:"Before she starts the machine, look at the workstation. Four things are wrong. Can you find them?",
+  next:"Find the hazards",
+  h2b:"Find the four hazards",
+  pclick:"Click on what is wrong before Sara starts the machine.",
+  h2c:"How to do the start-up check",
+  lead1:"Work from the outside in: first the area, then the machine, then yourself – and last the job.",
+  learn:'<li><span class="grp">The area</span><div><div class="st"><b>1. Walk round the machine: floor clear and nothing in the way</b><span>You must be able to stand steady and get away quickly. This is where the plastic and chips were lying.</span></div></div></li>' +
+        '<li><span class="grp">The machine</span><div><div class="st"><b>2. Check that all guards are in place and intact</b><span>If the chuck guard is raised or damaged, you don’t start.</span></div><div class="st"><b>3. Check that the emergency stop is clear and works</b><span>Press it in and reset it. Nothing may stand in front of it – like the boxes did.</span></div></div></li>' +
+        '<li><span class="grp">Yourself</span><div><div class="st"><b>4. Safety glasses on – no gloves, no loose sleeves</b><span>Your glasses belong on you, not on the hook. Gloves and sleeves can catch in anything that rotates.</span></div></div></li>' +
+        '<li><span class="grp">The job</span><div><div class="st"><b>5. Clamp the workpiece in the vice</b><span>A loose workpiece can be caught by the rotation.</span></div><div class="st"><b>6. Test run without load and listen for odd noises</b><span>Feel for vibration before you start drilling. If something sounds wrong: stop and report it.</span></div></div></li>',
+  why:"<b>Why in that order?</b> The machine must be safe before you stand at it, and you must be ready yourself before the workpiece is clamped and the machine is started.",
+  practise:"Practise the start-up check",
+  h2d:"The start-up check in the right order",
+  pturn:"Now it’s Sara’s turn. Drag the steps into the right order – remember: from the outside in.",
+  ohelp:"With a keyboard: select a step with the space bar, move it with the up and down arrows, and drop it with the space bar.",
+  check:"Check the order",
+  h2e:"The drill bit has jammed",
+  pjam:"Halfway through the third bracket it stops. The motor is humming and the bit is stuck in the workpiece. What should Sara do?",
+  totest:"To the test",
+  retry:"Retake the test", restart:"Restart the course",
+  made:"Produced by Morfos Edtech Akademi", notes:"Show how we built it",
+  exit:"Exit the course", doneH:"The course is finished", doneP:"Thank you for taking the course! Would you like a course like this made from your own material? <a href=\"/\">Back to morfos.se</a>"
+};
+var EN_ALT = { imgalt:"Workshop with a red pillar drill. The chuck guard is raised, a wooden block lies loose on the drill table, boxes are stacked in front of the emergency stop and there is plastic and chips on the floor." };
+var EN_ARIA = { scanaria:"Example of the original instruction" };
+var EN_TITLES = ["Welcome","The source material","Meet Sara","Find the hazards","How to do the start-up check","Practise the start-up check","The drill bit jams","Knowledge test","Result"];
+
+var UI = {
+  sv:{step:"Steg", of:"av", found:" av 4 hittade", allFound:"Bra! Alla fyra hittade.", miss:"Det där ser okej ut. Titta efter något som kan skada Sara.",
+      risk:"Risk", foundSuffix:" – hittad", dropped:"Släppt på plats ", picked:"Valt: ", place:"Plats ", of6:" av 6.",
+      orderGood:"Rätt ordning. Först omgivningen och maskinens säkerhetsfunktioner, sedan du själv och arbetsstycket – och sist en provkörning.",
+      orderBad:" av 6 steg står rätt. Tips: börja med det som gäller hela arbetsplatsen och sluta med att maskinen faktiskt startas.",
+      again:" Välj igen.", q:"Fråga", next:"Nästa fråga", see:"Se resultat", right:"Rätt. ", wrong:"Inte riktigt. ",
+      passed:"Godkänt", notyet:"Inte godkänt än",
+      passText:"Du kan göra startkontrollen, hitta riskerna och vet vad du gör när borret fastnar. Visa din handledare att du är klar innan du kör maskinen själv.",
+      failText:"Du behöver minst 4 rätt. Läs förklaringarna igen och gör om testet.",
+      saved:"Resultatet är sparat i lärplattformen.", standalone:"Fristående läge: resultatet sparas när kursen körs i lärplattformen.",
+      title:"Säker start vid maskinen – demokurs"},
+  en:{step:"Step", of:"of", found:" of 4 found", allFound:"Well done! All four found.", miss:"That looks fine. Look for something that could hurt Sara.",
+      risk:"Hazard", foundSuffix:" – found", dropped:"Dropped at position ", picked:"Selected: ", place:"Position ", of6:" of 6.",
+      orderGood:"Right order. First the surroundings and the machine’s safety functions, then yourself and the workpiece – and last a test run.",
+      orderBad:" of 6 steps are in the right place. Tip: start with what concerns the whole workplace and finish with actually starting the machine.",
+      again:" Choose again.", q:"Question", next:"Next question", see:"See result", right:"Correct. ", wrong:"Not quite. ",
+      passed:"Passed", notyet:"Not passed yet",
+      passText:"You can do the start-up check, spot the hazards and know what to do when the drill bit jams. Show your supervisor you’re done before you run the machine on your own.",
+      failText:"You need at least 4 correct. Read the explanations again and retake the test.",
+      saved:"Your result is saved in the learning platform.", standalone:"Standalone mode: the result is saved when the course runs in the learning platform.",
+      title:"Machine Safety – demo course"}
+};
+function U(k){ return UI[LANG][k]; }
+
+(function captureSwedish(){
+  document.querySelectorAll("[data-i18n]").forEach(function(el){ if(!(el.dataset.i18n in SV)) SV[el.dataset.i18n] = el.innerHTML; });
+  document.querySelectorAll("[data-i18n-alt]").forEach(function(el){ SV_ALT[el.dataset.i18nAlt] = el.getAttribute("alt"); });
+  document.querySelectorAll("[data-i18n-aria]").forEach(function(el){ SV_ARIA[el.dataset.i18nAria] = el.getAttribute("aria-label"); });
+  screens.forEach(function(s){ SV_TITLES.push(s.dataset.title); });
+})();
+
+function updateStepLabel(){
+  if(!document.getElementById("donePanel").hidden){ document.getElementById("steplabel").textContent = ""; return; }
+  var t = LANG === "en" ? EN_TITLES[current] : SV_TITLES[current];
+  document.getElementById("steplabel").textContent = U("step") + " " + (current+1) + " " + U("of") + " " + screens.length + ": " + t;
+}
+
+/* ---------- hotspots ---------- */
+var HZ = {
+  sv:[
+    {l:"Chuckskyddet", t:"Chuckskyddet är uppfällt", d:"Skyddet ska vara nedfällt och helt. Utan det kan spån och ett brustet borr träffa ögonen."},
+    {l:"Träblocket på borrbordet", t:"Arbetsstycket ligger löst", d:"Träblocket ligger fritt på bordet. Ett löst arbetsstycke kan rycka med i rotationen – spänn alltid fast det i ett skruvstycke."},
+    {l:"Nödstoppet bakom kartongerna", t:"Nödstoppet är blockerat", d:"Kartongerna är staplade framför nödstoppet. Det måste gå att nå direkt, utan att flytta något."},
+    {l:"Golvet bredvid maskinen", t:"Skräp och spån på golvet", d:"Plast, frigolit och spån ligger där du står och går. Snubbel- och halkrisk – städa undan innan start."}],
+  en:[
+    {l:"The chuck guard", t:"The chuck guard is raised", d:"The guard should be lowered and intact. Without it, chips and a broken bit can hit your eyes."},
+    {l:"The wooden block on the drill table", t:"The workpiece is loose", d:"The wooden block is lying free on the table. A loose workpiece can be caught by the rotation – always clamp it in a vice."},
+    {l:"The emergency stop behind the boxes", t:"The emergency stop is blocked", d:"The boxes are stacked in front of the emergency stop. It must be reachable immediately, without moving anything."},
+    {l:"The floor next to the machine", t:"Rubbish and chips on the floor", d:"Plastic, polystyrene and chips are lying where you stand and walk. Trip and slip hazard – clear it away before you start."}]
+};
+var foundList = document.getElementById("foundList"), found = 0, foundSet = [false,false,false,false], missShown = false;
+for(var i=0;i<4;i++){ var d=document.createElement("div"); d.className="found-item"; d.id="fi"+i; foundList.appendChild(d); }
+function renderHotspots(){
+  var H = HZ[LANG];
+  document.querySelectorAll(".hot").forEach(function(b){
+    var i = +b.dataset.hz;
+    b.setAttribute("aria-label", H[i].l + (foundSet[i] ? U("foundSuffix") : ""));
+    var fi = document.getElementById("fi"+i);
+    if(foundSet[i]){ fi.className="found-item ok"; fi.innerHTML = "<strong>"+(i+1)+". "+H[i].t+"</strong>"+H[i].d; }
+    else { fi.className="found-item"; fi.textContent = U("risk")+" "+(i+1)+": ?"; }
+  });
+  document.getElementById("hzHint").textContent = found===4 ? U("allFound") : found + U("found");
+  document.getElementById("miss").textContent = (missShown && found<4) ? U("miss") : "";
+}
+document.querySelectorAll(".hot").forEach(function(b){
+  b.addEventListener("click", function(e){
+    e.stopPropagation();
+    var i = +b.dataset.hz;
+    if(foundSet[i]) return;
+    foundSet[i] = true; found++; missShown = false;
+    b.classList.add("found");
+    if(found===4) document.getElementById("hzNext").disabled=false;
+    renderHotspots();
+  });
+});
+document.getElementById("scene").addEventListener("click", function(){
+  if(found<4){ missShown = true; renderHotspots(); }
+});
+
+/* ---------- ordering ---------- */
+var STEPS = {
+  sv:["Gå runt maskinen: golvet rent och inget i vägen","Kontrollera att alla skydd är på plats och hela","Kontrollera att nödstoppet är fritt och fungerar","Skyddsglasögon på – inga handskar, inga lösa ärmar","Spänn fast arbetsstycket i skruvstycket","Provkör utan last och lyssna efter missljud"],
+  en:["Walk round the machine: floor clear and nothing in the way","Check that all guards are in place and intact","Check that the emergency stop is clear and works","Safety glasses on – no gloves, no loose sleeves","Clamp the workpiece in the vice","Test run without load and listen for odd noises"]
+};
+function S(i){ return STEPS[LANG][i]; }
+var orderEl = document.getElementById("order");
+var seq = [3,0,5,2,4,1], orderState = null, orderRight = 0;
+function renderOrder(marks){
+  orderEl.innerHTML = "";
+  seq.forEach(function(s,i){
+    var li = document.createElement("li");
+    li.dataset.s = s; li.tabIndex = 0;
+    li.setAttribute("aria-label", (i+1)+". "+S(s));
+    if(marks) li.className = (s===i) ? "right" : "wrong";
+    li.innerHTML = '<span class="grip" aria-hidden="true"></span><span class="pos">'+(i+1)+'</span><span class="txt"></span>';
+    li.querySelector(".txt").textContent = S(s);
+    orderEl.appendChild(li);
+  });
+}
+function renderOrderFeedback(){
+  var fb = document.getElementById("orderFb");
+  if(orderState==="good"){ fb.className="feedback show good"; fb.textContent=U("orderGood"); }
+  else if(orderState==="bad"){ fb.className="feedback show bad"; fb.textContent=orderRight + U("orderBad"); }
+  else fb.className="feedback";
+}
+function syncOrder(){
+  seq = Array.prototype.map.call(orderEl.children, function(li){ return +li.dataset.s; });
+  Array.prototype.forEach.call(orderEl.children, function(li,i){
+    li.querySelector(".pos").textContent = i+1;
+    li.setAttribute("aria-label", (i+1)+". "+S(+li.dataset.s));
+    li.classList.remove("right","wrong");
+  });
+  orderState = null; renderOrderFeedback();
+}
+var dragEl = null, startY = 0, GAP = 8;
+orderEl.addEventListener("pointerdown", function(e){
+  var li = e.target.closest("li"); if(!li || e.button>0) return;
+  dragEl = li; startY = e.clientY;
+  li.setPointerCapture(e.pointerId); li.classList.add("dragging");
+  e.preventDefault();
+});
+orderEl.addEventListener("pointermove", function(e){
+  if(!dragEl) return;
+  dragEl.style.transform = "translateY("+(e.clientY-startY)+"px)";
+  var r = dragEl.getBoundingClientRect(), mid = r.top + r.height/2;
+  var prev = dragEl.previousElementSibling, next = dragEl.nextElementSibling;
+  if(prev){ var pr = prev.getBoundingClientRect(); if(mid < pr.top+pr.height/2){ orderEl.insertBefore(prev, dragEl.nextSibling); startY -= pr.height+GAP; } }
+  if(next){ var nr = next.getBoundingClientRect(); if(mid > nr.top+nr.height/2){ orderEl.insertBefore(next, dragEl); startY += nr.height+GAP; } }
+  dragEl.style.transform = "translateY("+(e.clientY-startY)+"px)";
+});
+function endDrag(){
+  if(!dragEl) return;
+  dragEl.style.transform = ""; dragEl.classList.remove("dragging"); dragEl = null;
+  syncOrder();
+}
+orderEl.addEventListener("pointerup", endDrag);
+orderEl.addEventListener("pointercancel", endDrag);
+var orderLive = document.getElementById("orderLive"), grabbed = null;
+function posOf(li){ return Array.prototype.indexOf.call(orderEl.children, li) + 1; }
+orderEl.addEventListener("keydown", function(e){
+  var li = e.target.closest("li"); if(!li) return;
+  var up = e.key==="ArrowUp", down = e.key==="ArrowDown";
+  if(e.key===" " || e.key==="Enter"){
+    e.preventDefault();
+    if(grabbed===li){ li.classList.remove("grabbed"); grabbed = null; orderLive.textContent = U("dropped")+posOf(li)+"."; }
+    else { if(grabbed) grabbed.classList.remove("grabbed"); grabbed = li; li.classList.add("grabbed"); orderLive.textContent = U("picked")+S(+li.dataset.s)+". "+U("place")+posOf(li)+U("of6"); }
+  } else if(grabbed===li && (up || down)){
+    e.preventDefault();
+    if(up && li.previousElementSibling) orderEl.insertBefore(li.previousElementSibling, li.nextSibling);
+    if(down && li.nextElementSibling) orderEl.insertBefore(li.nextElementSibling, li);
+    syncOrder(); li.classList.add("grabbed");
+    orderLive.textContent = U("place")+posOf(li)+U("of6");
+  } else if(e.key==="Escape" && grabbed){
+    grabbed.classList.remove("grabbed"); grabbed = null;
+  } else if(!grabbed && (up || down)){
+    e.preventDefault();
+    var t = up ? li.previousElementSibling : li.nextElementSibling; if(t) t.focus();
+  }
+});
+document.getElementById("checkOrder").addEventListener("click", function(){
+  orderRight = seq.filter(function(s,i){ return s===i; }).length;
+  renderOrder(true);
+  orderState = orderRight===6 ? "good" : "bad";
+  if(orderState==="good") document.getElementById("orderNext").disabled=false;
+  renderOrderFeedback();
+});
+
+/* ---------- branching scenario ---------- */
+var JAM = {
+  sv:[
+    {t:"Lossa borret snabbt med handen medan motorn går – det tar bara en sekund.", f:"Stopp. Spindeln kan släppa och rotera igen när som helst. Det här är ett av de vanligaste sätten att skada handen vid en borrmaskin."},
+    {t:"Slå av med strömbrytaren och lossa borret direkt.", f:"Nästan. Men spindeln kan rotera vidare en stund, och vem som helst kan slå på maskinen igen medan Sara har handen där."},
+    {t:"Tryck på nödstoppet, vänta tills spindeln står helt still, bryt strömmen och sätt sitt personliga lås och märkning – lossa sedan borret.", f:"Rätt. Låsa, märka, prova: energin är bruten, maskinen kan inte startas av någon annan, och Sara har kontrollerat att den står still."},
+    {t:"Låt maskinen gå och hämta handledaren.", f:"Att be om hjälp är bra – men en fastkörd maskin ska inte lämnas igång. Stoppa den först."}],
+  en:[
+    {t:"Quickly free the bit by hand while the motor is running – it only takes a second.", f:"Stop. The spindle can come free and turn again at any moment. This is one of the most common ways to injure a hand on a drill."},
+    {t:"Switch off at the power switch and free the bit straight away.", f:"Almost. But the spindle can keep turning for a while, and anyone could switch the machine back on while Sara’s hand is there."},
+    {t:"Press the emergency stop, wait until the spindle has stopped completely, isolate the power and fit her personal lock and tag – then free the bit.", f:"Correct. Lock, tag, try: the energy is isolated, nobody else can start the machine, and Sara has checked that it has stopped."},
+    {t:"Leave the machine running and fetch the supervisor.", f:"Asking for help is good – but a jammed machine must not be left running. Stop it first."}]
+};
+var JAM_OK = 2, jamPick = null;
+var jc = document.getElementById("jamChoices");
+function renderJam(){
+  jc.innerHTML = "";
+  var fb = document.getElementById("jamFb"), J = JAM[LANG];
+  J.forEach(function(o,k){
+    var b = document.createElement("button"); b.type="button"; b.className="choice"; b.textContent=o.t;
+    if(jamPick===JAM_OK){ b.disabled = true; if(k===JAM_OK) b.classList.add("right"); }
+    else if(jamPick===k) b.classList.add("wrong");
+    b.addEventListener("click", function(){ jamPick = k; if(k===JAM_OK) document.getElementById("jamNext").disabled=false; renderJam(); });
+    jc.appendChild(b);
+  });
+  if(jamPick===null){ fb.className="feedback"; }
+  else if(jamPick===JAM_OK){ fb.className="feedback show good"; fb.textContent=J[JAM_OK].f; }
+  else { fb.className="feedback show bad"; fb.textContent=J[jamPick].f + U("again"); }
+}
+
+/* ---------- quiz ---------- */
+var QUIZ = {
+  sv:[
+    {q:"Varför ska du inte använda handskar vid pelarborren?", a:["De gör det svårare att känna arbetsstycket","Handsken kan fastna i det roterande borret och dra med handen","Handskar slits fort av spånen"], c:1,
+     f:"Handsken kan gripas av spindeln eller borret och dra in handen. Använd skyddsglasögon – men inga handskar."},
+    {q:"Vad innebär ”låsa, märka, prova”?", a:["Låsa verkstadsdörren, märka maskinen och provköra den","Bryta energin, sätta ditt personliga lås och en märkning, och prova att maskinen inte går att starta","Låsa skyddet, märka arbetsstycket och prova borret"], c:1,
+     f:"Du bryter all energi, låser med ditt eget lås, märker med ditt namn och kontrollerar att maskinen inte kan startas."},
+    {q:"Nödstoppet är blockerat av material. Vad gör du?", a:["Startar ändå – du står nära panelen","Flyttar materialet så att nödstoppet går att nå, innan du startar","Ber någon annan stå vid nödstoppet"], c:1,
+     f:"Nödstoppet måste kunna nås direkt. Flytta det som står i vägen innan du startar."},
+    {q:"Chuckskyddet har en spricka. Vad gäller?", a:["Kör försiktigt och rapportera efter skiftet","Kör inte maskinen – märk den och rapportera till arbetsledaren","Tejpa ihop sprickan och kör"], c:1,
+     f:"Ett trasigt skydd betyder att maskinen inte får köras. Märk den och rapportera direkt."},
+    {q:"Vem får ta bort ett personligt lås från en maskin?", a:["Den som har satt dit det","Arbetsledaren, om det är bråttom","Den som ska använda maskinen härnäst"], c:0,
+     f:"Bara den som satt dit låset får ta bort det. Det är hela poängen med ett personligt lås."}],
+  en:[
+    {q:"Why shouldn’t you wear gloves at the pillar drill?", a:["They make it harder to feel the workpiece","The glove can catch in the rotating bit and pull your hand in","Gloves wear out quickly from the chips"], c:1,
+     f:"A glove can be caught by the spindle or the bit and pull your hand in. Wear safety glasses – but no gloves."},
+    {q:"What does “lock, tag, try” mean?", a:["Lock the workshop door, tag the machine and test-run it","Isolate the energy, fit your personal lock and a tag, and try to make sure the machine can’t be started","Lock the guard, tag the workpiece and try the bit"], c:1,
+     f:"You isolate all energy, lock with your own lock, tag it with your name and check that the machine can’t be started."},
+    {q:"The emergency stop is blocked by material. What do you do?", a:["Start anyway – you are standing close to the panel","Move the material so the emergency stop can be reached, before you start","Ask someone else to stand by the emergency stop"], c:1,
+     f:"The emergency stop must be reachable immediately. Move whatever is in the way before you start."},
+    {q:"The chuck guard has a crack. What applies?", a:["Run carefully and report it after the shift","Don’t run the machine – tag it and report it to the supervisor","Tape over the crack and run"], c:1,
+     f:"A damaged guard means the machine must not be run. Tag it and report it straight away."},
+    {q:"Who may remove a personal lock from a machine?", a:["The person who fitted it","The supervisor, if it’s urgent","The next person to use the machine"], c:0,
+     f:"Only the person who fitted the lock may remove it. That is the whole point of a personal lock."}]
+};
+var qi=0, qAns=[];
+function startQuiz(){ qi=0; qAns=[]; renderQ(); }
+function renderQ(){
+  var Q = QUIZ[LANG][qi], picked = qAns[qi];
+  document.getElementById("qcount").textContent = U("q")+" "+(qi+1)+" "+U("of")+" "+QUIZ[LANG].length;
+  document.getElementById("qtext").textContent = Q.q;
+  var box = document.getElementById("qchoices"); box.innerHTML="";
+  var fb = document.getElementById("qfb");
+  var nx = document.getElementById("qnext");
+  nx.textContent = qi===QUIZ[LANG].length-1 ? U("see") : U("next");
+  nx.disabled = picked===undefined;
+  Q.a.forEach(function(txt,k){
+    var b=document.createElement("button"); b.type="button"; b.className="choice"; b.textContent=txt;
+    if(picked!==undefined){ b.disabled=true; if(k===Q.c) b.classList.add("right"); else if(k===picked) b.classList.add("wrong"); }
+    b.addEventListener("click", function(){ qAns[qi]=k; renderQ(); document.getElementById("qnext").focus(); });
+    box.appendChild(b);
+  });
+  if(picked===undefined) fb.className="feedback";
+  else if(picked===Q.c){ fb.className="feedback show good"; fb.textContent=U("right")+Q.f; }
+  else { fb.className="feedback show bad"; fb.textContent=U("wrong")+Q.f; }
+}
+document.getElementById("qnext").addEventListener("click", function(){
+  if(qi < QUIZ[LANG].length-1){ qi++; renderQ(); var h=document.getElementById("qtext"); h.setAttribute("tabindex","-1"); h.focus(); }
+  else showResult();
+});
+
+/* ---------- result ---------- */
+var lastScore = null;
+function qScore(){ return qAns.filter(function(a,i){ return a===QUIZ.sv[i].c; }).length; }
+function renderResult(){
+  if(lastScore===null) return;
+  var passed = lastScore>=4, name = SCORM.learner();
+  document.getElementById("cert").className = "cert" + (passed ? "" : " fail");
+  document.getElementById("resTitle").textContent = passed ? (U("passed") + (name ? ", " + name : "")) : U("notyet");
+  document.getElementById("resScore").textContent = lastScore + " " + U("of") + " 5";
+  document.getElementById("resText").textContent = passed ? U("passText") : U("failText");
+  document.getElementById("lmsDot").className = "dot" + (SCORM.connected() ? "" : " off");
+  document.getElementById("lmsText").textContent = SCORM.connected() ? U("saved") : U("standalone");
+}
+function showResult(){
+  lastScore = qScore();
+  SCORM.report(Math.round(lastScore/5*100), lastScore>=4);
+  renderResult();
+  show(8);
+}
+document.getElementById("retry").addEventListener("click", function(){ show(7); });
+document.getElementById("restart").addEventListener("click", function(){ location.reload(); });
+document.getElementById("exitBtn").addEventListener("click", function(){
+  SCORM.finish();
+  screens.forEach(function(s){ s.classList.remove("active"); });
+  Array.prototype.forEach.call(progress.children, function(b){ b.className = "done"; });
+  var d = document.getElementById("donePanel"); d.hidden = false;
+  updateStepLabel();
+  var h = d.querySelector("h2"); h.setAttribute("tabindex","-1"); h.focus();
+  try { if(window.opener) window.close(); } catch(e){}
+});
+
+/* ---------- language switch (flags, top left) ---------- */
+function setLang(L){
+  LANG = L === "en" ? "en" : "sv";
+  document.documentElement.lang = LANG;
+  document.title = U("title");
+  document.querySelectorAll("[data-i18n]").forEach(function(el){
+    var k = el.dataset.i18n; var v = LANG==="en" ? EN[k] : SV[k];
+    if(v !== undefined) el.innerHTML = v;
+  });
+  document.querySelectorAll("[data-i18n-alt]").forEach(function(el){ var k=el.dataset.i18nAlt; el.setAttribute("alt", LANG==="en" ? EN_ALT[k] : SV_ALT[k]); });
+  document.querySelectorAll("[data-i18n-aria]").forEach(function(el){ var k=el.dataset.i18nAria; el.setAttribute("aria-label", LANG==="en" ? EN_ARIA[k] : SV_ARIA[k]); });
+  document.querySelectorAll("[data-setlang]").forEach(function(b){ b.setAttribute("aria-pressed", b.dataset.setlang===LANG ? "true" : "false"); });
+  updateStepLabel();
+  renderHotspots();
+  renderOrder(orderState!==null); renderOrderFeedback();
+  renderJam();
+  if(current===7) renderQ();
+  renderResult();
+  try { localStorage.setItem("morfos-demo-lang", LANG); } catch(e){}
+}
+document.querySelectorAll("[data-setlang]").forEach(function(b){
+  b.addEventListener("click", function(){ setLang(b.dataset.setlang); });
+});
+
+var startLang = "sv";
+try { startLang = localStorage.getItem("morfos-demo-lang") || "sv"; } catch(e){}
+var m = /[?&]lang=(sv|en)/.exec(location.search); if(m) startLang = m[1];
+show(0);
+setLang(startLang);
+</script>
+</body>
+</html>

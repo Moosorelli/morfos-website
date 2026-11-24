@@ -3,8 +3,8 @@
     {
       "title": "Säker start vid maskinen",
       "text": "Hitta riskerna, sätt stegen i rätt ordning och fatta beslut i ett verkligt scenario.",
-      "meta": "Ca 10 minuter · Produktion",
-      "url": ""
+      "meta": "Ca 7 minuter · Produktion",
+      "url": "/provkurser/saker-start-vid-maskinen/"
     },
     {
       "title": "Lär känna Morfos",
@@ -15,7 +15,17 @@
   ],
   "testimonials": [],
   "people": [
-    { "initials": "FB", "name": "Fredrik Bäck", "role": "Medgrundare & utbildningsutvecklare", "bio": "" },
-    { "initials": "TW", "name": "Tom Woodgate", "role": "Medgrundare & utbildningsutvecklare", "bio": "" }
+    {
+      "initials": "FB",
+      "name": "Fredrik Bäck",
+      "role": "Medgrundare & utbildningsutvecklare",
+      "bio": ""
+    },
+    {
+      "initials": "TW",
+      "name": "Tom Woodgate",
+      "role": "Medgrundare & utbildningsutvecklare",
+      "bio": ""
+    }
   ]
 }

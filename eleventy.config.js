@@ -5,6 +5,7 @@ export default function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy("fonts");
   eleventyConfig.addPassthroughCopy("css");
   eleventyConfig.addPassthroughCopy("media");
+  eleventyConfig.addPassthroughCopy("provkurser");
   eleventyConfig.addPassthroughCopy("*.{png,webp,svg,ico}");
   eleventyConfig.addPassthroughCopy({ "blogg/bilder": "blogg/bilder" });
 

@@ -30,7 +30,7 @@ En sak att undvika är att anpassa introduktionen efter ”lärstilar”. Idén 
 
 ## Så kan det se ut
 
-Vår demokurs *Säker start vid maskinen* bygger på en vanlig arbetsinstruktion från en pärm. Varje skärm tar upp en sak. Medarbetaren letar själv efter riskerna och sätter stegen i rätt ordning, och när borret fastnar får hen välja vad hen ska göra. Kursen tar ungefär sju minuter och kan göras om när som helst. Snart kan du prova den under [Provkurser](/#provkurser).
+Vår demokurs *Säker start vid maskinen* bygger på en vanlig arbetsinstruktion från en pärm. Varje skärm tar upp en sak. Medarbetaren letar själv efter riskerna och sätter stegen i rätt ordning, och när borret fastnar får hen välja vad hen ska göra. Kursen tar ungefär sju minuter och kan göras om när som helst. [Prova den själv här](/provkurser/saker-start-vid-maskinen/).
 
 ## Om Morfos
 
