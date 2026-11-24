@@ -40,6 +40,8 @@ h1[tabindex]:focus,h2[tabindex]:focus{outline:none}
 .logo{display:flex;align-items:center;gap:10px;font:700 18px/1 var(--f-head);letter-spacing:.02em}
 .logo svg{width:34px;height:34px}
 .course-title{margin-left:auto;font-size:15px;color:var(--steel-2)}
+.exit{flex:none;display:inline-flex;align-items:center;min-height:40px;padding:6px 14px;border:2px solid var(--steel);border-radius:6px;color:var(--steel);font-weight:600;font-size:15px;text-decoration:none;white-space:nowrap}
+.exit:hover{background:var(--steel);color:#fff}
 .progress{display:flex;gap:4px;padding:10px 20px 0;max-width:980px;margin:0 auto;width:100%}
 .progress span{flex:1;height:6px;border-radius:3px;background:var(--line)}
 .progress span.done{background:var(--machine)}
@@ -173,6 +175,7 @@ footer{display:flex;gap:16px;align-items:center;justify-content:space-between;fl
   .found-list{grid-template-columns:1fr}
   .hot{width:11%}
   .course-title{display:none}
+  .exit{margin-left:auto}
 }
 @media (prefers-reduced-motion:no-preference){
   .screen.active{animation:in .25s ease-out}
@@ -192,6 +195,7 @@ footer{display:flex;gap:16px;align-items:center;justify-content:space-between;fl
     Vänerns Mekaniska
   </div>
   <div class="course-title" data-i18n="ctitle">Säker start vid maskinen</div>
+  <a class="exit" href="/" data-i18n="exitlink" title="Tillbaka till morfos.se">✕ Avsluta</a>
 </header>
 <div class="progress" id="progress" aria-hidden="true"></div>
 <div class="steplabel" id="steplabel"></div>
@@ -493,7 +497,7 @@ var EN = {
   totest:"To the test",
   retry:"Retake the test", restart:"Restart the course",
   made:"Produced by Morfos Edtech Akademi", notes:"Show how we built it",
-  exit:"Exit the course", doneH:"The course is finished", doneP:"Thank you for taking the course! Would you like a course like this made from your own material? <a href=\"/\">Back to morfos.se</a>"
+  exit:"Exit the course", exitlink:"✕ Exit", doneH:"The course is finished", doneP:"Thank you for taking the course! Would you like a course like this made from your own material? <a href=\"/\">Back to morfos.se</a>"
 };
 var EN_ALT = { imgalt:"Workshop with a red pillar drill. The chuck guard is raised, a wooden block lies loose on the drill table, boxes are stacked in front of the emergency stop and there is plastic and chips on the floor." };
 var EN_ARIA = { scanaria:"Example of the original instruction" };
