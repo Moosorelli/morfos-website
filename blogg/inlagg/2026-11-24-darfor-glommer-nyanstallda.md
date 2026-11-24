@@ -39,7 +39,7 @@ Morfos Edtech Akademi i Skövde gör korta webbkurser av företagets eget materi
 ## Källor
 
 - Cepeda, N. J. m.fl. (2006). Distributed practice in verbal recall tasks. *Psychological Bulletin*, 132(3), 354–380.
-- Ebbinghaus, H. (1885). *Über das Gedächtnis*. Leipzig: Duncker & Humblot.
+- Ebbinghaus, H. (1913). *Memory: A Contribution to Experimental Psychology* (H. A. Ruger & C. E. Bussenius, övers.). New York: Teachers College, Columbia University. (Originalet utgavs 1885.) [Läs gratis online](https://yorku.ca/pclassic/Ebbinghaus)
 - Pashler, H. m.fl. (2008). Learning styles: Concepts and evidence. *Psychological Science in the Public Interest*, 9(3), 105–119.
 - Roediger, H. L. & Karpicke, J. D. (2006). Test-enhanced learning. *Psychological Science*, 17(3), 249–255.
 - Sweller, J. (1988). Cognitive load during problem solving. *Cognitive Science*, 12(2), 257–285.
