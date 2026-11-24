@@ -14,9 +14,13 @@ permalink: /
   </div>
   <div class="hero-media">
     <div class="splash">
-      <video id="splash" muted playsinline preload="auto" poster="/media/morfos-splash-cocoon-poster.jpg" aria-label="En kokong öppnas och blir Morfos-logotypen">
+      <video id="splash" autoplay muted playsinline preload="auto" poster="/media/morfos-splash-cocoon-poster.jpg" aria-label="En kokong öppnas och blir Morfos-logotypen">
         <source src="/media/morfos-splash-cocoon.mp4" type="video/mp4">
       </video>
+      <button class="splash-play" id="splash-play" type="button" hidden>
+        <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.5v15a1 1 0 0 0 1.5.86l12.5-7.5a1 1 0 0 0 0-1.72L8.5 3.64A1 1 0 0 0 7 4.5z"/></svg>
+        <span id="splash-play-label">Spela</span>
+      </button>
     </div>
   </div>
 </section>
@@ -127,11 +131,25 @@ permalink: /
 </section>
 
 <script>
-  // The splash plays once and stops on the logo. With reduced motion, only the final frame shows.
+  // The splash plays once and stops on the logo. With reduced motion it doesn't start by itself.
+  // If it can't start (reduced motion, or the browser blocks it), a "Spela" button lets visitors play it.
   (function () {
-    var v = document.getElementById("splash");
-    if (!v || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    var v = document.getElementById("splash"), b = document.getElementById("splash-play"), l = document.getElementById("splash-play-label");
+    if (!v || !b) return;
+    v.muted = true;
+    var started = false;
+    function showButton(text) { l.textContent = text; b.hidden = false; }
+    v.addEventListener("playing", function () { started = true; b.hidden = true; });
+    v.addEventListener("ended", function () { showButton("Spela igen"); });
+    b.addEventListener("click", function () { v.currentTime = 0; var p = v.play(); if (p && p.catch) p.catch(function () {}); });
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      v.removeAttribute("autoplay"); v.autoplay = false; v.pause();
+      showButton("Spela");
+      return;
+    }
     var p = v.play();
-    if (p && p.catch) p.catch(function () {});
+    if (p && p.catch) p.catch(function () { showButton("Spela"); });
+    // Some browsers neither play nor report an error: offer the button after a moment.
+    setTimeout(function () { if (!started) showButton("Spela"); }, 2500);
   })();
 </script>
